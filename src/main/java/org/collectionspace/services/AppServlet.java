@@ -20,7 +20,8 @@ public class AppServlet extends HttpServlet {
 	private Logger logger = LoggerFactory.getLogger(AppServlet.class);
 	private FrameworkBootstrap fb;
 	private static final String CSPACE_NUXEO_HOME = "";
-	private static final String NXSERVER = "C:/dev/tools/apache-tomcat-7.0.57/nxserver";
+//	private static final String NXSERVER = "C:/dev/tools/apache-tomcat-7.0.57/nxserver";
+	private static final String NXSERVER = "/Users/remillet/dev/tools/apache-tomcat-7.0.57/nxserver";
 
 	private File getNuxeoServerDir(String serverRootPath) throws IOException {
 		File result = null;
@@ -78,6 +79,13 @@ public class AppServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		System.err.println("Testing System error messages. REMX.");
+        System.setProperty("nuxeo.log.dir", "/Users/remillet/dev/tools/apache-tomcat-7.0.57/nxserver/log");
+
+		logger.debug("Testing DEBUG REMX level.");
+		logger.debug("Testing INFO REMX level.");
+		logger.debug("Testing ERROR REMX level.");
+		logger.debug("Testing WARN REMX level.");
 		//
 		// Start, excercise, and stop Nuxeo
 		//

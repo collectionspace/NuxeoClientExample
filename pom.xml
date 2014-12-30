@@ -12,6 +12,10 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<nuxeo.core.version>6.0</nuxeo.core.version>
+		<!-- using the tomcat 6.x container -->
+		<cargo.container>tomcat7x</cargo.container>
+		<cspace.server.home>/Users/remillet/dev/tools/apache-tomcat-7.0.57</cspace.server.home>
+		<!--<cspace.server.home>${env.CATALINA_HOME}</cspace.server.home> -->
 	</properties>
 
 	<repositories>
@@ -44,13 +48,16 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.6.1</version>
+			<version>1.7.5</version>
+			<scope>provided</scope>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 			<version>1.6.1</version>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>junit</groupId>
@@ -104,6 +111,66 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<version>2.5</version>
+			</plugin>
+			<plugin>
+				<!-- cargo plugin -->
+				<groupId>org.codehaus.cargo</groupId>
+				<artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.0.6</version>
+				<configuration>
+					<wait>false</wait>
+					<!-- specifying the container -->
+					<container>
+						<containerId>${cargo.container}</containerId>
+						<!-- assuming container is already installed -->
+						<type>installed</type>
+						<!-- path to the server -->
+						<home>${cspace.server.home}</home>
+						<timeout>300000</timeout>
+					</container>
+					<configuration>
+						<type>existing</type>
+						<home>${cspace.server.home}</home>
+					</configuration>
+					<deployer>
+						<deployables>
+							<deployable>
+								<!-- location of war file -->
+								<location>
+									${project.basedir}/target/${project.build.finalName}.${project.packaging}
+								</location>
+							</deployable>
+						</deployables>
+					</deployer>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>install</phase>
+						<goals>
+							<goal>deployer-deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- Delete the exploded war file directory from the JEE container when 
+				a 'clean' build is performed -->
+			<plugin>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<phase>clean</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<target>
+								<delete verbose="true"
+									dir="${cspace.server.home}/webapps/${project.build.finalName}" />
+							</target>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
