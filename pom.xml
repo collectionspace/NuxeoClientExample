@@ -12,10 +12,11 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<nuxeo.core.version>6.0</nuxeo.core.version>
+		<nuxeo.platform.version>6.0</nuxeo.platform.version>
 		<!-- using the tomcat 6.x container -->
 		<cargo.container>tomcat7x</cargo.container>
-		<cspace.server.home>/Users/remillet/dev/tools/apache-tomcat-7.0.57</cspace.server.home>
-		<!--<cspace.server.home>${env.CATALINA_HOME}</cspace.server.home> -->
+		<!--<cspace.server.home>/Users/remillet/dev/tools/apache-tomcat-7.0.57</cspace.server.home> -->
+		<cspace.server.home>${env.CATALINA_HOME}</cspace.server.home>
 	</properties>
 
 	<repositories>
@@ -51,14 +52,8 @@
 			<version>1.7.5</version>
 			<scope>provided</scope>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-log4j12</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-		-->
-
+		<!-- <dependency> <groupId>org.slf4j</groupId> <artifactId>slf4j-log4j12</artifactId> 
+			<version>1.6.1</version> </dependency> -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -82,6 +77,26 @@
 			<artifactId>nuxeo-runtime-launcher</artifactId>
 			<version>${nuxeo.core.version}</version>
 			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-api</artifactId>
+			<version>${nuxeo.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.core</groupId>
+			<artifactId>nuxeo-core-api</artifactId>
+			<version>${nuxeo.core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-filemanager-core</artifactId>
+			<version>${nuxeo.platform.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.nuxeo.ecm.platform</groupId>
+			<artifactId>nuxeo-platform-usermanager-core</artifactId>
+			<version>${nuxeo.platform.version}</version>
 		</dependency>
 	</dependencies>
 
