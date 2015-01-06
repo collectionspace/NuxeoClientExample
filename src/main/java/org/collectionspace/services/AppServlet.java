@@ -2,6 +2,8 @@ package org.collectionspace.services;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
 import java.security.Principal;
 import java.util.Arrays;
 
@@ -14,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.PropertyConfigurator;
 import org.nuxeo.osgi.application.FrameworkBootstrap;
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
@@ -28,8 +31,8 @@ import org.nuxeo.runtime.transaction.TransactionHelper;
 
 @SuppressWarnings("serial")
 public class AppServlet extends HttpServlet {
-
-	private Logger logger = LoggerFactory.getLogger(AppServlet.class);
+	
+	private static Logger logger = LoggerFactory.getLogger(AppServlet.class);
 	private FrameworkBootstrap fb = null;
 
 	private static final String NUXEO_HOME_PROPERTY = "NUXEO_HOME";
@@ -185,12 +188,15 @@ public class AppServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+//		URL in = Thread.currentThread().getContextClassLoader().getResource("log4j.properties");
+//		PropertyConfigurator.configure(in.getFile());
+
 		logger.debug("Testing DEBUG REMX level.");
-		logger.debug("Testing INFO REMX level.");
-		logger.debug("Testing ERROR REMX level.");
-		logger.debug("Testing WARN REMX level.");
+		logger.info("Testing INFO REMX level.");
+		logger.error("Testing ERROR REMX level.");
+		logger.warn("Testing WARN REMX level.");
 		//
-		// Start, excercise, and stop Nuxeo
+		// Start, exercise, and stop Nuxeo
 		//
 		try {
 //			startNuxeo();
