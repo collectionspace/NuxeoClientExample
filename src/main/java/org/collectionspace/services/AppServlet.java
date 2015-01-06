@@ -1,3 +1,9 @@
+/*
+ * An example servlet that starts up an embedded instance of the Nuxeo EP framework and makes
+ * a few calls to the API.
+ * 
+ * The servlet lazy loads the Nuxeo EP instance once.
+ */
 package org.collectionspace.services;
 
 import java.io.File;
@@ -18,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.log4j.PropertyConfigurator;
 import org.nuxeo.osgi.application.FrameworkBootstrap;
+import org.nuxeo.runtime.api.Framework;
+import org.nuxeo.runtime.transaction.TransactionHelper;
+
 import org.nuxeo.ecm.core.api.CoreInstance;
 import org.nuxeo.ecm.core.api.CoreSession;
 import org.nuxeo.ecm.core.api.DocumentModel;
@@ -26,8 +35,6 @@ import org.nuxeo.ecm.core.api.IdRef;
 import org.nuxeo.ecm.core.api.NuxeoPrincipal;
 import org.nuxeo.ecm.core.api.SystemPrincipal;
 import org.nuxeo.ecm.core.api.repository.RepositoryManager;
-import org.nuxeo.runtime.api.Framework;
-import org.nuxeo.runtime.transaction.TransactionHelper;
 
 @SuppressWarnings("serial")
 public class AppServlet extends HttpServlet {
@@ -51,7 +58,10 @@ public class AppServlet extends HttpServlet {
 		return nuxeoHomeDir;
 	}
 
-	public void printWorkspaceTree(Principal principal) {
+	//
+	// Get a list repositories and then print out a list of documents in them.
+	//
+	private void printWorkspaceTree(Principal principal) {
 		RepositoryManager repositoryManager = Framework.getService(RepositoryManager.class);
 		for (String repositoryName : repositoryManager.getRepositoryNames()) {
 			try (CoreSession session = CoreInstance.openCoreSession(repositoryName, principal)) {  // try-with-resources statement
@@ -61,11 +71,17 @@ public class AppServlet extends HttpServlet {
 		}		
 	}
 
-	Principal getPrincipal() {
+	//
+	// Returns the "system" user for authenticating with the Nuxeo EP framework.
+	//
+	private Principal getPrincipal() {
 		NuxeoPrincipal principal = new SystemPrincipal(null);
 		return principal;
 	}
 
+	//
+	// Return the root directory of the Nuxeo server
+	//
 	private File getNuxeoHomeDir() throws IOException {
 		File result = null;
 		String errMsg = null;
@@ -111,6 +127,9 @@ public class AppServlet extends HttpServlet {
 		}
 	}
 
+	//
+	// Send some info about a DocumentModel and all it's children to standard out
+	//
 	private void printDocModelInfo(DocumentModel docModel, int level) {
 		String tabs = "";
 		for (int i = 0; i < level; i++) {
@@ -129,6 +148,9 @@ public class AppServlet extends HttpServlet {
 		}
 	}
 
+	//
+	// Create a Nuxeo "Workspace" document/folder.
+	//
 	private DocumentModel createNuxeoWorkspace(DocumentModel parentDoc, String workspaceName) {
 		DocumentModel result = null;
 		String workspaceId = null;
@@ -154,6 +176,10 @@ public class AppServlet extends HttpServlet {
 		return result;
 	}
 
+	//
+	// Create a "tree" four levels deep of Nuxeo "Workspace" documents in the default
+	// repository.
+	//
 	private void createWorkspaceTree(String prefix, Principal adminUser) {
 		RepositoryManager repositoryManager = Framework.getService(RepositoryManager.class);
 		String defaultRepoName = repositoryManager.getDefaultRepositoryName();
@@ -167,6 +193,9 @@ public class AppServlet extends HttpServlet {
 		CoreInstance.closeCoreSession(session);
 	}
 
+	//
+	// Perform some example Nuxeo EP API calls to verifying embedded Nuxeo startup.
+	//
 	private void excerciseNuxeo() {
 		try {
 			TransactionHelper.startTransaction();
@@ -181,10 +210,16 @@ public class AppServlet extends HttpServlet {
 		}
 	}
 
+	//
+	// No need to stop Nuxeo EP instance.  Doesn't seem to let us restart again anyway.
+	//
 	private void stopNuxeo() throws Exception {
 		// fb.stop();
 	}
 
+	//
+	// The Servlet's default method for handling GET requests to the base URL
+	//
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 

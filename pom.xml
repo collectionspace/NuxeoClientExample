@@ -21,9 +21,8 @@
 
 	<repositories>
 		<repository>
-			<id>nuxeo-public</id>
-			<name>nuxeo-public</name>
-			<url>http://nightly.collectionspace.org:8081/artifactory/nuxeo-public</url>
+			<id>public</id>
+			<url>http://maven.nuxeo.org/public</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -34,13 +33,11 @@
 		<repository>
 			<id>public-snapshot</id>
 			<url>http://maven.nuxeo.org/public-snapshot</url>
-			<!-- Nuxeo Snapshots Repository is disabled. -->
 			<releases>
 				<enabled>false</enabled>
 			</releases>
 			<snapshots>
 				<enabled>true</enabled>
-				<!--<updatePolicy>never</updatePolicy> -->
 			</snapshots>
 		</repository>
 	</repositories>
@@ -76,6 +73,7 @@
 			<version>1.9.0</version>
 			<scope>test</scope>
 		</dependency>
+		<!-- Nuxeo runtime dependencies will be provided by the Nuxeo EP framework. -->
 		<dependency>
 			<groupId>org.nuxeo.lib.runtime</groupId>
 			<artifactId>nuxeo-runtime-launcher</artifactId>
@@ -91,11 +89,13 @@
 			<groupId>org.nuxeo.ecm.platform</groupId>
 			<artifactId>nuxeo-platform-filemanager-core</artifactId>
 			<version>${nuxeo.platform.version}</version>
+			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.nuxeo.ecm.platform</groupId>
-			<artifactId>nuxeo-platform-usermanager-core</artifactId>
+			<groupId>org.nuxeo.lib.core</groupId>
+			<artifactId>nuxeo-core-storage-sql-extensions</artifactId>
 			<version>${nuxeo.platform.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
