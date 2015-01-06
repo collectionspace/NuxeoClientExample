@@ -193,9 +193,9 @@ public class AppServlet extends HttpServlet {
 		// Start, excercise, and stop Nuxeo
 		//
 		try {
-			startNuxeo();
-			excerciseNuxeo();
-			stopNuxeo();
+//			startNuxeo();
+//			excerciseNuxeo();
+//			stopNuxeo();
 		} catch (Exception x) {
 			x.printStackTrace(System.err); // REM - TODO Replace with log
 											// statement
