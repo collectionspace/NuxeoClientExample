@@ -2,14 +2,12 @@
  * An example servlet that starts up an embedded instance of the Nuxeo EP framework and makes
  * a few calls to the API.
  * 
- * The servlet lazy loads the Nuxeo EP instance once.
+ * The servlet lazy loads the Nuxeo EP instance exactly once.
  */
 package org.collectionspace.services;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.security.Principal;
 import java.util.Arrays;
 
@@ -22,7 +20,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.log4j.PropertyConfigurator;
 import org.nuxeo.osgi.application.FrameworkBootstrap;
 import org.nuxeo.runtime.api.Framework;
 import org.nuxeo.runtime.transaction.TransactionHelper;
@@ -44,7 +41,8 @@ public class AppServlet extends HttpServlet {
 
 	private static final String NUXEO_HOME_PROPERTY = "NUXEO_HOME";
 
-	private String getNuxeoHomeProperty() {
+	private String getNuxeoHomeProperty()
+	{
 		String nuxeoHomeDir = System.getProperty(NUXEO_HOME_PROPERTY);
 		
 		if (nuxeoHomeDir == null) {
@@ -55,6 +53,7 @@ public class AppServlet extends HttpServlet {
 						NUXEO_HOME_PROPERTY));
 			}
 		}
+
 		return nuxeoHomeDir;
 	}
 
@@ -203,8 +202,7 @@ public class AppServlet extends HttpServlet {
 			createWorkspaceTree("Level", adminUser);
 			printWorkspaceTree(adminUser);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			logger.error("Failed to exercise Nuxeo calls.", e);
 		} finally {
 			TransactionHelper.commitOrRollbackTransaction();
 		}
@@ -234,14 +232,18 @@ public class AppServlet extends HttpServlet {
 		// Start, exercise, and stop Nuxeo
 		//
 		try {
-//			startNuxeo();
-//			excerciseNuxeo();
-//			stopNuxeo();
-		} catch (Exception x) {
-			x.printStackTrace(System.err); // REM - TODO Replace with log
-											// statement
+			startNuxeo();
+			excerciseNuxeo();
+			stopNuxeo();
+		} catch (Exception e) {
+			logger.error("Failed to make a successful connection to Nuxeo", e);
 		}
 
+		logger.debug("Testing again DEBUG REMX level.");
+		logger.info("Testing again INFO REMX level.");
+		logger.error("Testing again ERROR REMX level.");
+		logger.warn("Testing again WARN REMX level.");
+		
 		//
 		// Original code
 		//
