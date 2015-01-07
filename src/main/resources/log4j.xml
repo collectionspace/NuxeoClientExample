@@ -12,9 +12,9 @@
   <!--
       CollectionSpace Services logging file
   -->
-  <appender name="CSPACE" class="org.apache.log4j.RollingFileAppender">
+  <appender name="NuxeoClientExample" class="org.apache.log4j.RollingFileAppender">
     <errorHandler class="org.apache.log4j.helpers.OnlyOnceErrorHandler" />
-    <param name="File" value="${catalina.base}/logs/cspace-services.log" />
+    <param name="File" value="${catalina.base}/logs/nuxeo-client-example.log" />
     <param name="Append" value="false" />
     <param name="MaxFileSize" value="5000KB" />
     <param name="MaxBackupIndex" value="3" />
@@ -228,7 +228,7 @@
 
   <category name="org.collectionspace" additivity="false">
     <priority value="TRACE" />
-    <appender-ref ref="CSPACE" />
+    <appender-ref ref="NuxeoClientExample" />
   </category>
   
   <category name="org.apache.catalina.loader" additivity="false">
@@ -559,7 +559,7 @@
     <level value="WARN" />
     <appender-ref ref="CONSOLE" />
     <appender-ref ref="FILE" />
-    <appender-ref ref="CSPACE" />
+    <appender-ref ref="NuxeoClientExample" />
   </root>
 
 </log4j:configuration>
