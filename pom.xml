@@ -109,9 +109,14 @@
 				<configuration>
 					<systemProperties>
 						<property>
-						<!-- Needed for log4j.xml settings to work. -->
-						<name>nuxeo.log.dir</name>
-						<value>nuxeo-test-logs</value>
+							<!-- Needed for log4j.xml settings to work. -->
+							<name>nuxeo.log.dir</name>
+							<value>nuxeo-test-logs</value>
+						</property>
+						<property>
+							<!-- Needed for log4j.xml settings to work. -->
+							<name>catalina.base</name>
+							<value>test-logs</value>
 						</property>
 					</systemProperties>
 				</configuration>
