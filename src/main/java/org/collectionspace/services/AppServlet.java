@@ -179,10 +179,8 @@ public class AppServlet extends HttpServlet {
 	// Create a "tree" four levels deep of Nuxeo "Workspace" documents in the default
 	// repository.
 	//
-	private void createWorkspaceTree(String prefix, Principal adminUser) {
-		RepositoryManager repositoryManager = Framework.getService(RepositoryManager.class);
-		String defaultRepoName = repositoryManager.getDefaultRepositoryName();
-		CoreSession session = CoreInstance.openCoreSession(defaultRepoName, adminUser);
+	private void createWorkspaceTree(String prefix, Principal adminUser, String repositoryName) {
+		CoreSession session = CoreInstance.openCoreSession(repositoryName, adminUser);
 
 		DocumentModel root = session.getRootDocument();
 		for (int i = 0; i < 4; i++) {
@@ -199,7 +197,12 @@ public class AppServlet extends HttpServlet {
 		try {
 			TransactionHelper.startTransaction();
 			Principal adminUser = this.getPrincipal();
-			createWorkspaceTree("Level", adminUser);
+			RepositoryManager repositoryManager = Framework.getService(RepositoryManager.class);
+			String repositoryName = repositoryManager.getDefaultRepositoryName();
+
+			createWorkspaceTree("Default Level", adminUser, repositoryName);
+			createWorkspaceTree("Lifesci Level", adminUser, "lifesci_domain");
+			
 			printWorkspaceTree(adminUser);
 		} catch (Exception e) {
 			logger.error("Failed to exercise Nuxeo calls.", e);
